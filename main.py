@@ -1,5 +1,8 @@
 import telebot
 
+def read_file(file):
+    return open('Token.txt', 'r')
+bot = telebot.Telebot(Token)
 
 @bot.message_handler(commands=['website'])
 def website(message):
