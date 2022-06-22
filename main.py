@@ -1,46 +1,45 @@
 import telebot
+from commands import Commands
 
 
 def read_file(path):
-    return open('Token.txt', 'r')
+    return open(path, 'r')
 
 
-token = str(open('Token.txt', 'r').readline())
+token = str(read_file('Token.txt').readline())
 bot = telebot.TeleBot(token)
 
 
+@bot.message_handler(commands=['start'])
+def hello(message):
+    bot.send_message(message.chat.id, f'Привіт, {message.from_user.first_name}. Нажміть команду /help',
+                     parse_mode='html')
+
+
+@bot.message_handler(commands=['help'])
+def help(message):
+    bot.send_message(message.chat.id,
+                     'За допомогою команд /tons, /gram, /hundredweight, ви зможете перевести кілограми '
+                     'в тони, грами, центнери відповідно. Для цього наберіть команду і через пробіл'
+                     ' кількість кілограм. Наприклад, /tons 5000', parse_mode='html')
+
+
 @bot.message_handler(commands=['tons'])
-def yourCommand(message):
-    calculiator = Function(message)
-    tons = calculiator.tons(message)
-    bot.send_message(message.chat.id, str(tons), parse_mode='html')
+def commands_for_tons(message):
+    com = Commands()
+    return com.command_tons(message)
+
 
 @bot.message_handler(commands=['gram'])
-def yourCommand(message):
-    calculiator = Function(message)
-    gram = calculiator.gram(message)
-    bot.send_message(message.chat.id, str(gram), parse_mode='html')
+def commands_for_gram(message):
+    com = Commands()
+    return com.command_gram(message)
 
 
-class Function:
-    def __init__(self, message):
-        self.message = message
-
-    def extract_arg(self, arg):
-        self.arg = arg
-        status = arg.split()[1:]
-        list = [float(item) for item in status]
-        return list
-
-    def tons(self, message):
-        ints = self.extract_arg(message.text)
-        number = ints[0] / 1000
-        return number
-
-    def gram(self, message):
-        ints = self.extract_arg(message.text)
-        number = ints[0] * 1000
-        return number
+@bot.message_handler(commands=['hundredweight'])
+def commands_for_hundredweight(message):
+    com = Commands()
+    return com.command_hundredweight(message)
 
 
 bot.polling(none_stop=True)
