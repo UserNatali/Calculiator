@@ -27,19 +27,19 @@ def help(message):
 @bot.message_handler(commands=['tons'])
 def commands_for_tons(message):
     com = Commands()
-    return com.command_tons(message)
+    return com.command_tons(message, bot)
 
 
 @bot.message_handler(commands=['gram'])
 def commands_for_gram(message):
     com = Commands()
-    return com.command_gram(message)
+    return com.command_gram(message, bot)
 
 
 @bot.message_handler(commands=['hundredweight'])
 def commands_for_hundredweight(message):
     com = Commands()
-    return com.command_hundredweight(message)
+    return com.command_hundredweight(message, bot)
 
 
 bot.polling(none_stop=True)
